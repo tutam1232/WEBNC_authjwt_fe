@@ -6,7 +6,8 @@ import { useAuthStore } from "./useAuthStore";
 // Parameters: promise - a promise object
 // Returns: throw promise if status is pending, throw result if status is error, return result if status is success -> so that Suspense, ErrorBoundary
 // can catch the promise or error or return the result
-const wrapPromise = (promise) => {
+const wrapPromise = (promise, setAccessToken, setEmail) => {
+  
   let status = "pending";
   let result;
   let suspend = promise.then(
@@ -43,6 +44,8 @@ const wrapPromise = (promise) => {
 const useFetchProtectedData = (url, method, senddata = {}) => {
   const [data, setData] = useState(null);
   const accessToken = useAuthStore((state) => state.accessToken);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setEmail = useAuthStore((state) => state.setEmail);
   useEffect(() => {
     const getData = async () => {
       const config = {
@@ -61,7 +64,7 @@ const useFetchProtectedData = (url, method, senddata = {}) => {
 
       const promise = axios(config).then((res) => res?.data);
 
-      setData(wrapPromise(promise));
+      setData(wrapPromise(promise, setAccessToken, setEmail));
     };
 
     getData();
