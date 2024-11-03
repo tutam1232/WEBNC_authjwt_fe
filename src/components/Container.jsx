@@ -15,7 +15,7 @@ const PublicContainer = ({ children }) => {
     <ErrorBoundary fallback={<Error />}>
       <Suspense fallback={<Loading />}>
         <h1 style={{ textAlign: "center" }}>
-          Advanced Web Development exercise - authentication
+          Advanced Web Development exercise - JWT authentication
         </h1>
         <div
           style={{
